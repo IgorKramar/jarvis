@@ -1,8 +1,11 @@
 import telebot;
 
+from src.services.WeatherService import WeatherService;
+
 class Bot:
   def __init__(self, api_key):
     self.bot = telebot.TeleBot(api_key)
+    self.weatherService = WeatherService()
 
   # === SYSTEM ===
 
@@ -20,6 +23,10 @@ class Bot:
     def handle_start(message):
       self.send_welcome(message)
 
+    @self.bot.message_handler(commands=['weather'])
+    def handle_weather(message):
+      self.get_weather(message)
+
     @self.bot.message_handler(func=lambda message: True)
     def handle_echo(message):
       self.echo_message(message)
@@ -31,3 +38,6 @@ class Bot:
 
   def echo_message(self, message):
     self.bot.reply_to(message, message.text)
+
+  def get_weather(self, message):
+    self.bot.reply_to(message, self.weatherService.getForecast())
