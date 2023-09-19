@@ -1,11 +1,13 @@
 import telebot;
 
 from src.services.WeatherService import WeatherService;
+from src.services.GeoService import GeoService;
 
 class Bot:
   def __init__(self, api_key):
     self.bot = telebot.TeleBot(api_key)
     self.weatherService = WeatherService()
+    self.geoService = GeoService()
 
   # === SYSTEM ===
 
@@ -40,4 +42,4 @@ class Bot:
     self.bot.reply_to(message, message.text)
 
   def get_weather(self, message):
-    self.bot.reply_to(message, self.weatherService.getForecast())
+    self.bot.reply_to(message, self.geoService.get_geo_by_city('Омск'))
